@@ -1,5 +1,6 @@
 import urllib2,sys,json,os
 
+#You can change to your appropriate path
 save_folder  = "/home/bvtuan/Desktop/voa_learning_english"
 
 def chunk_report(bytes_so_far, total_size,mb_size):
@@ -31,6 +32,12 @@ def chunk_read(response, chunk_size=8192, report_hook=None):
 
   return "".join(data)
 
+def write_file_from_url(url , file_path):
+  response = urllib2.urlopen( url  )
+  output = open(file_path, "w")
+  output.write(chunk_read(response, report_hook=chunk_report))
+  output.close()
+
 if __name__ == '__main__':
 
   file = open('data.txt', 'r')
@@ -54,7 +61,7 @@ if __name__ == '__main__':
 
     article_path = category_path + "/" + article_name
 
-    print "Downloading article {0}: {0}/{1} files".format(article_name, index,total_size)
+    print "Downloading article {0}: {0}/{1} files".format(article_name, index, len(articles))
 
     if not os.path.exists(article_path):
       os.makedirs(article_path)
@@ -64,24 +71,19 @@ if __name__ == '__main__':
       continue
 
     #Remove uncessary string at the end of file
-    
+    enclosure_path = article_path + "/enclosure.jpg"
     pdf_path = article_path + "/document.pdf"
     audio_path = article_path + "/audio.mp3"
 
+    print "  downloading enclosure"
+    write_file_from_url( article['enclosure'], enclosure_path )
+
     print "  downloading pdf"
-
-    #Get file content
-    response = urllib2.urlopen( article['pdf_url'] )
-    output = open(pdf_path, "w")
-    output.write(chunk_read(response, report_hook=chunk_report))
-    output.close()
-
+    write_file_from_url( article['pdf_url'], pdf_path )
+    
     print "  downloading audio"
-
-    response = urllib2.urlopen( article['audio_link'] )
-    output = open(audio_path, "w")
-    output.write(chunk_read(response, report_hook=chunk_report))
-    output.close()
+    write_file_from_url( article['audio_link'], audio_path )
+    
     index += 1
 
   print "Download done, have fun :)"
