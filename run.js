@@ -107,19 +107,29 @@ casper.then(function(){
     casper.echo("Opening "+ article.link);
     this.thenOpen((article.link), function() {
       //this.echo(this.getTitle()); // display the title of page
-      var bullet_orange = this.getElementsAttribute('ul.bullet_orange:last-child a','href');
-
       
-      var audio_link = "http://learningenglish.voanews.com"  + bullet_orange[0];
-      article.pdf_url = bullet_orange[2];
+      if ( article.link.indexOf("/video/") != -1 ){
+        log("this is video link, get find video source");
+        var downloadlinkstatic = this.getElementsAttribute('.html5PlayerPrimary video source','src');
+        log("video url " + downloadlinkstatic[0]);
+        article.video_link = downloadlinkstatic[0];        
+      }else{
+        var downloadlinkstatic = this.getElementsAttribute('li.downloadlink ul li:first-child a','href');
+        log("audio url" + downloadlinkstatic[0]);
+        article.audio_link = downloadlinkstatic[0];        
+      }
 
-      this.thenOpen(audio_link,function(){
-        var downloadlinkstatic = this.getElementsAttribute('li.downloadlinkstatic a','href');
-        article.audio_link = downloadlinkstatic[1];
 
-      });
 
-      log(article.title);
+      /*var audio_link = "http://learningenglish.voanews.com"  + bullet_orange[0];*/
+      //article.pdf_url = bullet_orange[2];
+
+      /*this.thenOpen(audio_link,function(){
+        
+
+      });*/
+
+      log( JSON.stringify( article ) );
 
     });
   });

@@ -1,6 +1,6 @@
 import urllib2,sys,json,os
 
-#You can change to your appropriate path
+#You can change to your own path
 save_folder  = "/home/bvtuan/Desktop/voa_learning_english"
 
 def chunk_report(bytes_so_far, total_size,mb_size):
@@ -61,29 +61,33 @@ if __name__ == '__main__':
 
     article_path = category_path + "/" + article_name
 
-    print "Downloading article {0}: {0}/{1} files".format(article_name, index, len(articles))
+    print ("Downloading article {0}: {0}/{1} files".format(article_name.encode("utf-8"), index, len(articles)))
 
     if not os.path.exists(article_path):
       os.makedirs(article_path)
     else:
       index +=1
-      print "Already download, ignore it"
+      print ("Already download, ignore it")
       continue
 
     #Remove uncessary string at the end of file
     enclosure_path = article_path + "/enclosure.jpg"
-    pdf_path = article_path + "/document.pdf"
-    audio_path = article_path + "/audio.mp3"
+    # pdf_path = article_path + "/document.pdf"
+    
 
-    print "  downloading enclosure"
+    print ("downloading enclosure")
     write_file_from_url( article['enclosure'], enclosure_path )
 
-    print "  downloading pdf"
-    write_file_from_url( article['pdf_url'], pdf_path )
+    # print "  downloading pdf"
+    # write_file_from_url( article['pdf_url'], pdf_path )
     
-    print "  downloading audio"
-    write_file_from_url( article['audio_link'], audio_path )
+    if "audio_link" in article:
+      print ("Downloading audio")
+      write_file_from_url( article['audio_link'], article_path + "/audio.mp3" )
+    else:
+      print ("Downloading video")
+      write_file_from_url( article['video_link'], article_path + "/video.mp4" )
     
     index += 1
 
-  print "Download done, have fun :)"
+  print ("Download done, have fun :)")

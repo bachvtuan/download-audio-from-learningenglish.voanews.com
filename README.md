@@ -9,6 +9,6 @@ This tool read the [rss link](http://learningenglish.voanews.com/api/) to get wh
 
         casperjs run.js && python download.py
 
-Note: by default the document will be save to varriable "save_folder" in download.py. So you need edit it appropriate with your.
+Note: by default the document will be save to varriable "save_folder" in download.py. So you need edit it appropriate with your case.
 
-Checkout my lasted article on [Dethoima](http://dethoima.com)
+Checkout my lasted article on [Dethoima](http://dethoima.info)
