@@ -83,10 +83,10 @@ if __name__ == '__main__':
     
     if "audio_link" in article:
       print ("Downloading audio")
-      write_file_from_url( article['audio_link'], article_path + "/audio.mp3" )
+      write_file_from_url( article['audio_link'], article_path + "/"+ article['title'] +".mp3" )
     else:
       print ("Downloading video")
-      write_file_from_url( article['video_link'], article_path + "/video.mp4" )
+      write_file_from_url( article['video_link'], article_path + "/"+ article['title'] +".mp4" )
     
     index += 1
 
